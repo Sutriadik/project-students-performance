@@ -872,7 +872,7 @@ with c2:
             2: "Menikah",
             3: "Janda/Duda",
             4: "Cerai",
-            5: "5 - Facto Union",
+            5: "Facto Union",
             6: "Pisah Legal",
         }
         dff_marital = dff.copy()

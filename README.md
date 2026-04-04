@@ -1,83 +1,127 @@
 # Proyek Akhir: Menyelesaikan Permasalahan Institusi Pendidikan
 
+- **Nama:** Sutriadi kurniawan
+- **Email:** sutriadik@gmail.com
+- **ID Dicoding:** sutriadi_kurniawan
+
+---
+
 ## Business Understanding
 
-Jaya Jaya Institut merupakan institusi pendidikan perguruan yang telah berdiri sejak tahun 2000 dan telah mencetak banyak lulusan dengan reputasi yang sangat baik. Namun, institusi ini menghadapi tantangan serius berupa tingginya angka siswa yang tidak menyelesaikan pendidikannya (dropout). Dari total 4424 siswa, sebanyak 1421 siswa (32.1%) mengalami dropout. Hal ini berdampak negatif terhadap reputasi dan efektivitas institusi dalam menjalankan misinya.
+### Latar Belakang Bisnis
+
+Jaya Jaya Institut adalah institusi pendidikan perguruan tinggi yang berdiri sejak tahun 2000. Meskipun telah mencetak banyak lulusan, institusi ini menghadapi masalah serius berupa tingginya angka **dropout** mahasiswa (32.1%). Dropout yang tinggi berdampak pada reputasi institusi, efisiensi anggaran, dan kualitas lulusan secara keseluruhan.
 
 ### Permasalahan Bisnis
 
-1. Tingginya angka dropout siswa (32.1%) yang berdampak pada reputasi dan keberlanjutan institusi.
-2. Belum adanya sistem deteksi dini yang dapat mengidentifikasi siswa yang berpotensi dropout sejak awal.
-3. Pihak institusi belum memiliki dashboard untuk memonitor performa siswa secara visual dan real-time.
-4. Kurangnya pemahaman mendalam tentang faktor-faktor utama yang menyebabkan siswa dropout.
+1. Faktor apa yang paling memengaruhi siswa untuk dropout?
+2. Bisakah kita memprediksi siswa yang berisiko dropout sedini mungkin?
+3. Intervensi apa yang dapat dilakukan untuk mengurangi angka dropout?
 
 ### Cakupan Proyek
 
-1. Analisis data untuk mengidentifikasi faktor-faktor yang mempengaruhi dropout siswa.
-2. Pembangunan model machine learning untuk memprediksi status siswa (Dropout, Enrolled, Graduate).
-3. Pembuatan business dashboard menggunakan Streamlit untuk memonitor performa siswa.
-4. Pembuatan prototype sistem prediksi berbasis Streamlit yang di-deploy pada Streamlit Community Cloud.
-5. Penyusunan rekomendasi action items berdasarkan hasil analisis.
+- Analisis data siswa dengan pendekatan CRISP-DM
+- Business dashboard interaktif berbasis Streamlit (`dashboard.py`)
+- Model ML untuk prediksi risiko dropout (`app.py`)
+- Deployment ke Streamlit Community Cloud
 
 ### Persiapan
 
-Sumber data: [students' performance dataset](https://github.com/dicodingacademy/dicoding_dataset/blob/main/students_performance/README.md)
+**Sumber data:** [students_performance](https://github.com/dicodingacademy/dicoding_dataset/blob/main/students_performance/README.md)
 
-Setup environment:
-
+**Setup environment:**
 ```bash
-# Clone repository
-git clone <repository-url>
-cd submission
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
+**Menjalankan Notebook:**
+```bash
+# Buka notebook.ipynb di VS Code / Jupyter
+# Pilih kernel → Run All
+# Model tersimpan otomatis di folder model/
+```
+
+---
+
 ## Business Dashboard
 
-Business dashboard dibuat menggunakan **Streamlit** untuk membantu Jaya Jaya Institut memahami data dan memonitor performa siswa. Dashboard ini menampilkan:
+Dashboard monitoring performa siswa dibuat menggunakan **Streamlit**.
 
-1. **Metrik utama**: Total siswa, jumlah dan persentase Graduate, Dropout, dan Enrolled.
-2. **Distribusi status siswa**: Visualisasi bar chart jumlah siswa per status.
-3. **Dropout rate per course**: Identifikasi program studi dengan tingkat dropout tertinggi.
-4. **Performa akademik**: Perbandingan unit kurikulum yang disetujui di semester 1 dan 2 berdasarkan status siswa.
-5. **Faktor finansial**: Pengaruh pembayaran SPP dan beasiswa terhadap status siswa.
-6. **Faktor demografis**: Distribusi usia pendaftaran dan pengaruh gender terhadap status siswa.
-7. **Filter interaktif**: Sidebar filter untuk Status, Gender, dan Beasiswa.
-
-Cara menjalankan dashboard:
-
+**Menjalankan Dashboard (lokal):**
 ```bash
 streamlit run dashboard.py
+# Buka: http://localhost:8501
 ```
 
-## Menjalankan Sistem Machine Learning
+Konten dashboard (14 visualisasi):
+- KPI Overview (Total, Dropout rate, Graduate rate, Avg Nilai Sem 1 & 2)
+- Distribusi status siswa & dropout per program studi
+- Performa akademik semester 1 & 2
+- Faktor keuangan (SPP, beasiswa, hutang)
+- Profil demografi (usia, nilai masuk)
+- Analisis gender & jadwal kehadiran
+- Faktor risiko dropout & feature importance
+- Critical Academic Warning (success rate < 50%)
+- Tren progression akademik
+- Demografi usia & marital status
+- Dropout rate per nationality
 
-Prototype sistem machine learning dibuat menggunakan Streamlit yang memungkinkan pengguna memasukkan data siswa dan mendapatkan prediksi status (Dropout / Enrolled / Graduate) beserta probabilitasnya.
+---
 
-Cara menjalankan secara lokal:
+## Menjalankan Prototype Machine Learning
 
+**Lokal:**
 ```bash
 streamlit run app.py
+# Buka: http://localhost:8501
 ```
 
-Link prototype (Streamlit Community Cloud): **[masukkan link setelah deploy]**
+**Online (Streamlit Community Cloud):**
+> 🔗 **https://project-students-performance-prediction.streamlit.app/**
+
+Isi form data akademik dan demografis siswa, lalu klik **Prediksi** untuk mengetahui risiko dropout.
+
+---
 
 ## Conclusion
 
-Berdasarkan analisis yang telah dilakukan, berikut adalah kesimpulan dari proyek ini:
+### Faktor Utama Penyebab Dropout
 
-1. **Faktor akademik** merupakan prediktor paling kuat terhadap status siswa. Jumlah unit kurikulum yang disetujui dan nilai rata-rata di semester 1 dan 2 menjadi fitur terpenting dalam memprediksi dropout.
-2. **Faktor finansial** juga berpengaruh signifikan. Siswa yang membayar SPP tepat waktu dan penerima beasiswa memiliki tingkat kelulusan yang lebih tinggi.
-3. **Usia saat pendaftaran** berhubungan dengan risiko dropout. Siswa yang mendaftar di usia lebih tua cenderung lebih berisiko dropout.
-4. Model machine learning berhasil dibangun dan mampu memprediksi status siswa dengan akurasi yang baik, sehingga dapat digunakan sebagai sistem deteksi dini dropout.
+| # | Faktor | Temuan |
+|---|--------|--------|
+| 1 | **Nilai Semester 1 & 2** | Nilai rendah di awal studi adalah prediktor dropout terkuat |
+| 2 | **Mata Kuliah Lulus** | Sedikit MK yang lulus → risiko dropout sangat tinggi |
+| 3 | **Status Pembayaran SPP** | Mahasiswa yang menunggak SPP memiliki dropout rate jauh lebih tinggi |
+| 4 | **Status Beasiswa** | Penerima beasiswa memiliki dropout rate lebih rendah |
+| 5 | **Usia saat Mendaftar** | Mahasiswa yang mendaftar di usia lebih tua lebih berisiko |
+| 6 | **Status Hutang** | Mahasiswa dengan hutang memiliki risiko dropout lebih tinggi |
 
 ### Rekomendasi Action Items
 
-Berikut rekomendasi yang dapat dilakukan Jaya Jaya Institut untuk mengurangi angka dropout:
+1. **Program Bimbingan Akademik Dini** — Siswa dengan nilai semester 1 rendah segera diberi tutoring dan pendampingan intensif
+2. **Fleksibilitas Pembayaran SPP** — Buat skema cicilan atau keringanan bagi siswa yang mengalami kesulitan keuangan
+3. **Perluasan Program Beasiswa** — Perbanyak beasiswa karena terbukti menurunkan dropout rate secara signifikan
+4. **Early Warning System** — Gunakan model prediksi untuk monitoring bulanan; siswa dengan probabilitas dropout ≥ 60% segera diberi bimbingan khusus
+5. **Program Orientasi & Mentoring** — Khusus untuk mahasiswa baru, terutama yang mendaftar di usia lebih tua
 
-- **Action item 1: Sistem peringatan dini berbasis akademik.** Implementasikan monitoring otomatis terhadap performa siswa di akhir semester 1. Siswa dengan unit disetujui dan nilai di bawah rata-rata perlu segera diberikan bimbingan akademik intensif.
-- **Action item 2: Program bantuan finansial yang lebih proaktif.** Perluas program beasiswa dan keringanan SPP, terutama bagi siswa yang teridentifikasi berisiko dropout karena faktor finansial (debitur, SPP tidak lancar).
-- **Action item 3: Mentoring khusus untuk siswa berisiko tinggi.** Sediakan program mentoring atau tutoring khusus bagi siswa yang masuk kategori berisiko berdasarkan prediksi model, terutama di semester awal perkuliahan.
-- **Action item 4: Evaluasi dan perbaikan program studi.** Lakukan evaluasi mendalam terhadap program studi dengan dropout rate tertinggi untuk mengidentifikasi dan memperbaiki faktor penyebab spesifik pada masing-masing program.
+---
+
+## Struktur Proyek
+
+```
+submission project/
+├── model/
+│   ├── model.joblib
+│   ├── scaler.joblib
+│   ├── label_encoder.joblib
+│   └── feature_names.joblib
+├── .streamlit/
+│   └── config.toml
+├── notebook.ipynb
+├── app.py
+├── dashboard.py
+├── README.md
+├── requirements.txt
+├── data.csv
+└── sutriadik24-dashboard.png
+```

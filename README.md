@@ -8,22 +8,29 @@
 
 ## Business Understanding
 
-### Latar Belakang Bisnis
+Jaya Jaya Institut adalah perguruan tinggi yang telah beroperasi sejak tahun 2000 dan saat ini menghadapi tantangan serius berupa tingginya angka dropout mahasiswa yang mencapai **32.1%** — hampir sepertiga dari seluruh mahasiswa terdaftar tidak menyelesaikan pendidikannya.
 
-Jaya Jaya Institut adalah institusi pendidikan perguruan tinggi yang berdiri sejak tahun 2000. Meskipun telah mencetak banyak lulusan, institusi ini menghadapi masalah serius berupa tingginya angka **dropout** mahasiswa (32.1%). Dropout yang tinggi berdampak pada reputasi institusi, efisiensi anggaran, dan kualitas lulusan secara keseluruhan.
+Tingginya angka dropout berdampak langsung pada berbagai aspek institusi:
+- **Akreditasi & reputasi** — angka kelulusan yang rendah mempengaruhi penilaian akreditasi dan citra institusi di mata calon mahasiswa maupun masyarakat
+- **Operasional & finansial** — biaya rekrutmen mahasiswa baru yang terus meningkat untuk menggantikan yang keluar, serta kehilangan potensi pendapatan dari mahasiswa yang tidak menyelesaikan studi
+- **Kualitas lulusan** — tingginya dropout mengindikasikan adanya permasalahan sistemik pada dukungan akademik, finansial, maupun sosial yang diberikan institusi
+
+Selama ini, identifikasi mahasiswa berisiko dropout dilakukan secara reaktif — setelah mahasiswa sudah terlanjur keluar. Institusi belum memiliki mekanisme deteksi dini yang mampu mengidentifikasi mahasiswa berisiko sejak semester pertama, sehingga intervensi sering terlambat dan tidak tepat sasaran.
+
+Proyek ini membangun solusi berbasis machine learning sebagai tools **deteksi dini dropout** yang dapat membantu tim akademik dan konseling mengidentifikasi mahasiswa berisiko secara proaktif, sehingga intervensi dapat dirancang lebih tepat waktu dan tepat sasaran sebelum mahasiswa benar-benar keluar.
 
 ### Permasalahan Bisnis
 
-1. Faktor apa yang paling memengaruhi siswa untuk dropout?
-2. Bisakah kita memprediksi siswa yang berisiko dropout sedini mungkin?
-3. Intervensi apa yang dapat dilakukan untuk mengurangi angka dropout?
+1. Faktor apa yang paling memengaruhi mahasiswa untuk dropout?
+2. Bisakah kita memprediksi mahasiswa yang berisiko dropout sedini mungkin?
+3. Intervensi apa yang dapat dilakukan untuk mengurangi angka dropout secara efektif?
 
 ### Cakupan Proyek
 
-- Analisis data siswa dengan pendekatan CRISP-DM
-- Business dashboard interaktif berbasis Streamlit (`dashboard.py`)
-- Model ML prediksi dropout binary: **Dropout vs Graduate** (`app.py`)
-- Deployment ke Streamlit Community Cloud
+- Analisis data mahasiswa dengan pendekatan CRISP-DM
+- Business dashboard interaktif berbasis Streamlit untuk monitoring performa mahasiswa
+- Model ML prediksi dropout binary: **Dropout vs Graduate**
+- Deployment prototype ke Streamlit Community Cloud
 
 ### Persiapan
 
@@ -33,12 +40,12 @@ Jaya Jaya Institut adalah institusi pendidikan perguruan tinggi yang berdiri sej
 
 ```bash
 # Python yang digunakan: Python 3.11
-# Buat virtual environment
+# 1. Buat virtual environment
 python3 -m venv venv
 source venv/bin/activate       # macOS/Linux
 # venv\Scripts\activate        # Windows
 
-# Install semua dependencies
+# 2. Install semua dependencies
 pip install -r requirements.txt
 ```
 
@@ -55,7 +62,7 @@ code notebook.ipynb
 
 ## Business Dashboard
 
-Dashboard monitoring performa siswa menggunakan **Streamlit**.
+Dashboard monitoring performa mahasiswa dibangun menggunakan **Streamlit** dengan 14 visualisasi interaktif yang dirancang untuk membantu pengambilan keputusan berbasis data.
 
 **Menjalankan Dashboard (lokal):**
 ```bash
@@ -64,6 +71,26 @@ streamlit run dashboard.py
 
 **Dashboard online:**
 > 🔗 **https://project-students-performance-dashboard.streamlit.app/**
+
+### Fitur & Visualisasi Dashboard
+
+Dashboard dilengkapi **filter interaktif** di sidebar (Status, Gender, Penerima Beasiswa) yang memungkinkan stakeholder mengeksplorasi data secara dinamis.
+
+| # | Visualisasi | Tujuan |
+|---|-------------|--------|
+| 1 | **KPI Overview** (6 kartu metrik) | Memberikan gambaran seketika: total mahasiswa, dropout rate, graduate rate, enrolled, dan rata-rata nilai Sem 1 & 2 |
+| 2 | **Distribusi Status Siswa** (donut chart) | Memperlihatkan proporsi Dropout/Enrolled/Graduate secara visual untuk memahami skala masalah |
+| 3 | **Dropout Rate per Program Studi** (bar horizontal) | Mengidentifikasi program studi dengan dropout tertinggi sebagai prioritas evaluasi kurikulum |
+| 4 | **Distribusi Nilai Semester 1 & 2** (box plot) | Membandingkan distribusi nilai antar kelompok status untuk mengidentifikasi pola performa akademik |
+| 5 | **Rata-rata MK Lulus per Status** (grouped bar) | Menunjukkan perbedaan produktivitas akademik antara Dropout dan Graduate |
+| 6 | **Faktor Keuangan** (stacked bar: SPP, Beasiswa, Hutang) | Mengungkap pengaruh kondisi finansial terhadap kemungkinan dropout |
+| 7 | **Distribusi Usia & Nilai Masuk** (histogram & violin) | Memahami profil demografis mahasiswa berisiko berdasarkan usia dan nilai seleksi |
+| 8 | **Gender & Jadwal Kehadiran** (stacked bar) | Menganalisis pola dropout berdasarkan gender dan waktu kuliah (pagi/malam) |
+| 9 | **Feature Importance** (bar horizontal) | Menampilkan faktor-faktor yang paling berpengaruh terhadap prediksi dropout berdasarkan model Random Forest |
+| 10 | **Critical Academic Warning** (KPI + stacked bar) | Menghitung jumlah mahasiswa dengan success rate < 50% yang memerlukan intervensi segera |
+| 11 | **Tren Progression Akademik** (line chart) | Memvisualisasikan bagaimana proporsi status berubah seiring meningkatnya jumlah MK yang lulus |
+| 12 | **Demografi: Usia & Marital Status** (stacked bar) | Menganalisis pengaruh kelompok usia dan status pernikahan terhadap outcome mahasiswa |
+| 13 | **Dropout Rate per Nationality** (bar horizontal) | Mengidentifikasi apakah mahasiswa dari negara tertentu memiliki risiko dropout di atas rata-rata |
 
 ---
 
@@ -77,8 +104,8 @@ streamlit run app.py
 **Online (Streamlit Community Cloud):**
 > 🔗 **https://project-students-performance-prediction.streamlit.app/**
 
-Isi form data akademik dan demografis siswa, lalu klik **Prediksi**.
-Hasil prediksi: **Dropout** atau **Graduate**.
+Masukkan data akademik dan demografis mahasiswa, lalu klik **Prediksi**.
+Hasil: **Dropout** atau **Graduate** beserta probabilitas dan faktor risiko yang teridentifikasi.
 
 ---
 
@@ -93,12 +120,12 @@ Hasil prediksi: **Dropout** atau **Graduate**.
 | 3 | **Status SPP** | SPP belum lunas → ~70% dropout, hanya ~8% graduate |
 | 4 | **Status Beasiswa** | Penerima beasiswa memiliki dropout rate lebih rendah |
 | 5 | **Usia saat Mendaftar** | Usia 26–30 dan 41+ memiliki dropout rate tertinggi |
-| 6 | **Status Hutang** | Siswa berhutang memiliki risiko dropout lebih tinggi |
+| 6 | **Status Hutang** | Mahasiswa berhutang memiliki risiko dropout lebih tinggi |
 | 7 | **Gender** | Laki-laki dropout ~45%, perempuan ~25% |
 
 ### 2. Performa Model Machine Learning
 
-Model binary classification **Dropout vs Graduate** (Enrolled dikecualikan dari training).
+Model binary classification **Dropout vs Graduate** — data Enrolled dikecualikan dari training karena belum memiliki label akhir.
 
 | Model | Accuracy | Precision | Recall | F1-Score |
 |-------|:--------:|:---------:|:------:|:--------:|
@@ -108,7 +135,7 @@ Model binary classification **Dropout vs Graduate** (Enrolled dikecualikan dari 
 
 **Random Forest dipilih** karena memiliki keseimbangan terbaik antara Accuracy (90.91%), Precision (89.33%), dan F1-Score (92.83%).
 
-**Top 5 Feature Importance (Random Forest):**
+**Top 5 Feature Importance:**
 1. `Sem2_approval_rate` — rasio MK lulus Semester 2
 2. `Total_approved` — total MK lulus kedua semester
 3. `Curricular_units_2nd_sem_approved` — jumlah MK lulus Sem 2
@@ -117,8 +144,8 @@ Model binary classification **Dropout vs Graduate** (Enrolled dikecualikan dari 
 
 ### Rekomendasi Action Items
 
-1. **Bimbingan Akademik Dini** — Siswa dengan nilai Sem 1 rendah atau MK lulus < 3 segera diberi pendampingan intensif
-2. **Fleksibilitas Pembayaran SPP** — Skema cicilan bagi siswa yang kesulitan keuangan
+1. **Bimbingan Akademik Dini** — Mahasiswa dengan nilai Sem 1 rendah atau MK lulus < 3 segera diberi pendampingan intensif
+2. **Fleksibilitas Pembayaran SPP** — Skema cicilan bagi mahasiswa yang kesulitan keuangan
 3. **Perluasan Program Beasiswa** — Terbukti menurunkan dropout rate secara signifikan
 4. **Early Warning System** — Monitoring bulanan; prob dropout ≥ 60% → bimbingan khusus
 5. **Program Mentoring** — Khusus mahasiswa baru usia lebih tua dan mahasiswa laki-laki

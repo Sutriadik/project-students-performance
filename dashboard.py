@@ -29,10 +29,14 @@ C_LGRN  = "#68D391"
 C_LBLUE = "#63B3ED"
 C_LAMB  = "#F6AD55"
 
+# Palet sekuensial biru untuk chart non-status
+SEQ_BLUE = ["#C6DBEF","#9ECAE1","#6BAED6","#4292C6","#2171B5","#084594"]
+
+# Palet warna seragam berbasis biru — konsisten di semua chart
 STATUS_COLORS = {
-    "Dropout":  C_LRED,
-    "Enrolled": C_LBLUE,
-    "Graduate": C_LGRN,
+    "Dropout":  "#2166AC",   # biru tua  — perlu perhatian
+    "Enrolled": "#92C5DE",   # biru muda — netral/sedang
+    "Graduate": "#4DAC26",   # hijau     — positif/baik
 }
 
 # ── CSS ───────────────────────────────────────────────────────
@@ -282,7 +286,7 @@ with c2:
         fig = px.bar(
             course_dropout, x="DropoutRate", y="Course_lbl",
             orientation="h",
-            color="DropoutRate", color_continuous_scale="RdYlGn_r",
+            color="DropoutRate", color_continuous_scale="Blues",
             text="DropoutRate",
             custom_data=["Total"],
         )
@@ -526,7 +530,9 @@ risk_data.append({"Faktor": "📊 Rata-rata (Baseline)",
                    "Rate": round(baseline, 1), "n": len(dff)})
 
 risk_df = pd.DataFrame(risk_data).sort_values("Rate", ascending=True)
-clrs    = ["#C53030" if r > baseline else "#3182CE" for r in risk_df["Rate"]]
+# Warna intensitas biru — semakin tinggi rate semakin gelap
+_mn, _mx = risk_df["Rate"].min(), risk_df["Rate"].max()
+clrs = [f"rgba(8, 81, 156, {0.35 + 0.65*(v-_mn)/(_mx-_mn+0.001):.2f})" for v in risk_df["Rate"]]
 
 fig = go.Figure(go.Bar(
     x=risk_df["Rate"], y=risk_df["Faktor"],
@@ -708,9 +714,8 @@ _fi_df = pd.DataFrame({
     "Importance": _rf.feature_importances_,
 }).sort_values("Importance", ascending=True)
 
-_threshold_fi = _fi_df["Importance"].quantile(0.6)
-_clrs_fi = ["#C53030" if v >= _threshold_fi else "#3182CE"
-            for v in _fi_df["Importance"]]
+_mn_fi, _mx_fi = _fi_df["Importance"].min(), _fi_df["Importance"].max()
+_clrs_fi = [f"rgba(8, 81, 156, {0.35 + 0.65*(v-_mn_fi)/(_mx_fi-_mn_fi+0.001):.2f})" for v in _fi_df["Importance"]]
 
 fig = go.Figure(go.Bar(
     x=_fi_df["Importance"],
@@ -872,7 +877,7 @@ with c2:
             2: "Menikah",
             3: "Janda/Duda",
             4: "Cerai",
-            5: "Facto Union",
+            5: "5 - Facto Union",
             6: "Pisah Legal",
         }
         dff_marital = dff.copy()
@@ -950,7 +955,8 @@ if COL_NATION:
                     .reset_index()
                     .sort_values("Rate", ascending=True))
         nat_plot["n"] = nat_plot["Nationality_lbl"].map(nat_cnt).fillna(0).astype(int)
-        clrs_nat = ["#C53030" if r > _base else "#3182CE" for r in nat_plot["Rate"]]
+        _mn_nat, _mx_nat = nat_plot["Rate"].min(), nat_plot["Rate"].max()
+        clrs_nat = [f"rgba(8, 81, 156, {0.35 + 0.65*(v-_mn_nat)/(_mx_nat-_mn_nat+0.001):.2f})" for v in nat_plot["Rate"]]
 
         fig = go.Figure(go.Bar(
             x=nat_plot["Rate"], y=nat_plot["Nationality_lbl"],

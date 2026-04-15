@@ -207,7 +207,7 @@ dff = df[
 st.markdown('<div class="ptitle">🎓 Student Performance Dashboard</div>',
             unsafe_allow_html=True)
 st.markdown(
-    '<div class="psub">Business Intelligence — Jaya Jaya Institut | '
+    '<div class="psub">Business Intelligence Jaya Jaya Institut | '
     f'Menampilkan <b>{len(dff):,}</b> dari {len(df):,} siswa</div>',
     unsafe_allow_html=True)
 st.markdown('<hr class="divider">', unsafe_allow_html=True)
@@ -497,7 +497,7 @@ with c2:
 sec("Faktor Risiko Dropout: Dropout Rate per Kondisi", "⚠️")
 
 ibox("Dropout rate aktual untuk setiap kondisi faktor risiko. "
-     "Bar merah = kondisi yang mendorong dropout di atas rata-rata (baseline).", "warn")
+     "<b>Bar biru lebih gelap</b> = kondisi dengan dropout rate lebih tinggi di atas rata-rata (baseline).", "warn")
 
 baseline = dff[COL_STATUS].eq("Dropout").mean() * 100
 
@@ -530,7 +530,7 @@ risk_data.append({"Faktor": "📊 Rata-rata (Baseline)",
                    "Rate": round(baseline, 1), "n": len(dff)})
 
 risk_df = pd.DataFrame(risk_data).sort_values("Rate", ascending=True)
-# Warna intensitas biru — semakin tinggi rate semakin gelap
+# Warna intensitas biru: semakin tinggi dropout rate, semakin gelap
 _mn, _mx = risk_df["Rate"].min(), risk_df["Rate"].max()
 clrs = [f"rgba(8, 81, 156, {0.35 + 0.65*(v-_mn)/(_mx-_mn+0.001):.2f})" for v in risk_df["Rate"]]
 
@@ -551,8 +551,8 @@ fig.update_layout(title="<b>Dropout Rate per Kondisi Faktor Risiko</b>",
                   showlegend=False, paper_bgcolor="white")
 pchart(fig, 420)
 
-ibox("Faktor berwarna <b>merah</b> memiliki dropout rate di atas baseline — "
-     "prioritas untuk intervensi segera.", "danger")
+ibox("Faktor dengan <b>bar biru gelap dan lebih panjang</b> melewati garis baseline "
+     "memiliki dropout rate di atas rata-rata menjadi prioritas untuk intervensi segera.", "danger")
 
 
 # ══════════════════════════════════════════════════════════════
@@ -561,7 +561,7 @@ ibox("Faktor berwarna <b>merah</b> memiliki dropout rate di atas baseline — "
 sec("Critical Academic Warning: Siswa dengan Success Rate < 50%", "🚨")
 
 ibox("Success Rate = proporsi mata kuliah yang lulus dibanding yang diambil. "
-     "Siswa di bawah 50% di Sem 1 atau Sem 2 dikategorikan dalam zona merah.", "warn")
+     "Siswa di bawah 50% di Sem 1 atau Sem 2 dikategorikan dalam zona kritis.", "warn")
 
 dff_warn = dff.copy()
 dff_warn["sr1"] = np.where(
@@ -665,7 +665,7 @@ with c2:
     pchart(fig, 340)
 
 ibox(f"Terdapat <b>{len(low_both):,} siswa</b> ({len(low_both)/total_w*100:.1f}%) dengan success rate rendah "
-     f"di kedua semester sekaligus — kelompok ini harus menjadi prioritas program bimbingan intensif.", "danger")
+     f"di kedua semester sekaligus sehingga kelompok karakteristik ini harus menjadi prioritas program bimbingan intensif.", "danger")
 
 
 # ══════════════════════════════════════════════════════════════
@@ -714,6 +714,7 @@ _fi_df = pd.DataFrame({
     "Importance": _rf.feature_importances_,
 }).sort_values("Importance", ascending=True)
 
+# Warna intensitas biru: semakin tinggi importance, semakin gelap
 _mn_fi, _mx_fi = _fi_df["Importance"].min(), _fi_df["Importance"].max()
 _clrs_fi = [f"rgba(8, 81, 156, {0.35 + 0.65*(v-_mn_fi)/(_mx_fi-_mn_fi+0.001):.2f})" for v in _fi_df["Importance"]]
 
@@ -735,7 +736,7 @@ fig.update_layout(
     showlegend=False, paper_bgcolor="white")
 pchart(fig, 420)
 
-ibox("Fitur berwarna <b>merah</b> adalah prediktor terkuat dropout. "
+ibox("Fitur dengan <b>bar biru gelap dan paling panjang</b> adalah prediktor terkuat dropout. "
      "Nilai & kelulusan MK di semester 1 dan 2 secara konsisten menjadi faktor paling menentukan.", "danger")
 
 
@@ -976,7 +977,7 @@ if COL_NATION:
             showlegend=False, paper_bgcolor="white")
         pchart(fig, max(360, len(nat_plot) * 32))
 
-    ibox("Bar <b>merah</b> = dropout rate di atas baseline. Siswa internasional dari beberapa "
+    ibox("<b>Bar biru gelap</b> menunjukkan dropout rate di atas baseline. Siswa internasional dari beberapa "
          "negara tertentu menunjukkan risiko dropout lebih tinggi dan mungkin membutuhkan "
          "dukungan adaptasi tambahan.", "info")
 else:
@@ -985,4 +986,4 @@ else:
 
 # Footer
 st.markdown("---")
-st.caption("📊 Jaya Jaya Institut — Student Performance Dashboard · Data Science Project · sutriadik24")
+st.caption("📊 Jaya Jaya Institut Student Performance Dashboard · Data Science Project · sutriadik")
